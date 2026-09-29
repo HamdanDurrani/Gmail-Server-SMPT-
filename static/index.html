@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SMTP Test Server</title>
+  <link rel="stylesheet" href="/static/styles.css" />
+</head>
+<body>
+  <main class="wrap">
+    <header class="hero">
+      <p class="eyebrow">Gmail / SMTP checker</p>
+      <h1>Is your email sending working?</h1>
+      <p class="lede">
+        Paste your SMTP details, test the login, then send yourself a test message.
+      </p>
+      <p class="links">
+        Prefer the API? Open <a href="/docs" target="_blank" rel="noreferrer">/docs</a>
+      </p>
+    </header>
+
+    <section class="panel" aria-labelledby="creds-title">
+      <h2 id="creds-title">1. SMTP credentials</h2>
+      <form id="creds-form">
+        <div class="grid">
+          <label>
+            Host
+            <input name="host" value="smtp.gmail.com" required />
+          </label>
+          <label>
+            Port
+            <input name="port" type="number" value="587" required />
+          </label>
+          <label>
+            Username (email)
+            <input name="username" type="email" placeholder="you@gmail.com" required />
+          </label>
+          <label>
+            Password / App Password
+            <input name="password" type="password" placeholder="xxxx xxxx xxxx xxxx" required />
+          </label>
+          <label>
+            From email (optional)
+            <input name="from_email" type="email" placeholder="defaults to username" />
+          </label>
+          <label>
+            From name
+            <input name="from_name" value="SMTP Test Server" />
+          </label>
+        </div>
+        <div class="toggles">
+          <label class="check">
+            <input name="use_tls" type="checkbox" checked />
+            Use TLS (port 587)
+          </label>
+          <label class="check">
+            <input name="use_ssl" type="checkbox" />
+            Use SSL (port 465)
+          </label>
+        </div>
+        <div class="actions">
+          <button type="submit">Save credentials</button>
+          <button type="button" id="btn-status" class="ghost">Check status</button>
+        </div>
+      </form>
+    </section>
+
+    <section class="panel" aria-labelledby="test-title">
+      <h2 id="test-title">2. Test connection</h2>
+      <p>Logs into the SMTP server only — no email is sent.</p>
+      <button type="button" id="btn-test">Test SMTP connection</button>
+    </section>
+
+    <section class="panel" aria-labelledby="send-title">
+      <h2 id="send-title">3. Send a test email</h2>
+      <form id="send-form">
+        <div class="grid">
+          <label>
+            To email
+            <input name="to_email" type="email" placeholder="you@gmail.com" required />
+          </label>
+          <label>
+            Subject
+            <input name="subject" value="SMTP Test Email" />
+          </label>
+        </div>
+        <label>
+          Message
+          <textarea name="body" rows="4">Hello! If you received this, your SMTP setup is working.</textarea>
+        </label>
+        <div class="actions">
+          <button type="submit">Send test email</button>
+        </div>
+      </form>
+    </section>
+
+    <section class="panel result" id="result-panel" aria-live="polite">
+      <h2>Result</h2>
+      <pre id="output">Waiting for an action…</pre>
+    </section>
+  </main>
+
+  <div id="toast" class="toast" hidden aria-live="assertive" role="status">
+    <div class="toast__backdrop"></div>
+    <div class="toast__card">
+      <div class="toast__icon" id="toast-icon" aria-hidden="true">
+        <div class="toast__spinner"></div>
+        <svg class="toast__mark toast__mark--ok" viewBox="0 0 52 52">
+          <circle class="toast__ring" cx="26" cy="26" r="24" fill="none" />
+          <path class="toast__check" fill="none" d="M14 27 l8 8 16-16" />
+        </svg>
+        <svg class="toast__mark toast__mark--bad" viewBox="0 0 52 52">
+          <circle class="toast__ring" cx="26" cy="26" r="24" fill="none" />
+          <path class="toast__x toast__x--a" fill="none" d="M16 16 L36 36" />
+          <path class="toast__x toast__x--b" fill="none" d="M36 16 L16 36" />
+        </svg>
+      </div>
+      <h3 class="toast__title" id="toast-title">Testing…</h3>
+      <p class="toast__msg" id="toast-msg">Checking your SMTP connection</p>
+    </div>
+  </div>
+
+  <script src="/static/app.js"></script>
+</body>
+</html>
